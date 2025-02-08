@@ -46,7 +46,7 @@ class _RegisterPageState extends State<RegisterPage> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
-                  "Register",
+                  "Create an account",
                   style: TextStyle(
                       fontSize: 36,
                       fontWeight: FontWeight.w600,
