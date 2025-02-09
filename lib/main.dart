@@ -1,4 +1,6 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:new_task_app/snackbar.dart';
 
 void main() {
   runApp(MyApp());
@@ -25,6 +27,40 @@ class RegisterPage extends StatefulWidget {
 
 class _RegisterPageState extends State<RegisterPage> {
   bool isPasswordHidden = true;
+  bool isLoading = false;
+
+  late TextEditingController emailController;
+  late TextEditingController passwordController;
+
+  @override
+  void initState() {
+    super.initState();
+    emailController = TextEditingController();
+    passwordController = TextEditingController();
+  }
+
+  Future<void> register() async {
+    setState(() {
+      isLoading = true;
+    });
+    try {
+      FirebaseAuth auth = FirebaseAuth.instance;
+
+      final userCrediatials = await auth.createUserWithEmailAndPassword(
+          email: emailController.text, password: passwordController.text);
+
+      if (mounted) {
+        showSnackBar(context, "User register successful");
+      }
+    } on FirebaseAuthException catch (e) {
+      if (mounted) {
+        showSnackBar(context, e.message ?? "Errro registering user");
+      }
+    } finally {
+      
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -46,7 +82,7 @@ class _RegisterPageState extends State<RegisterPage> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
-                  "Create an account",
+                  "Register",
                   style: TextStyle(
                       fontSize: 36,
                       fontWeight: FontWeight.w600,
@@ -59,6 +95,7 @@ class _RegisterPageState extends State<RegisterPage> {
                       color: Colors.white,
                       borderRadius: BorderRadius.circular(19)),
                   child: TextField(
+                    controller: emailController,
                     decoration: InputDecoration(
                         prefixIcon: Icon(
                           Icons.email,
@@ -75,6 +112,7 @@ class _RegisterPageState extends State<RegisterPage> {
                       color: Colors.white,
                       borderRadius: BorderRadius.circular(19)),
                   child: TextField(
+                    controller: passwordController,
                     obscureText: isPasswordHidden,
                     decoration: InputDecoration(
                         prefixIcon: Icon(Icons.password),
