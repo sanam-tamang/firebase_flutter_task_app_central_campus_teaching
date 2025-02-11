@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:new_task_app/pages/home_page.dart';
@@ -45,8 +46,17 @@ class _RegisterPageState extends State<RegisterPage> {
       final userCredentials = await auth.createUserWithEmailAndPassword(
           email: emailController.text.trim(),
           password: passwordController.text);
+
+      FirebaseFirestore firestore = FirebaseFirestore.instance;
+      final user = userCredentials.user!;
+      await firestore
+          .collection("users")
+          .doc(user.uid)
+          .set({"id": user.uid, "email": user.email});
+
       if (mounted) {
         showSnackBar(context, "User Register Successful");
+
         Navigator.of(context).pushReplacement(
             MaterialPageRoute(builder: (context) => HomePage()));
       }

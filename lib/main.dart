@@ -26,3 +26,8 @@ class MyApp extends StatelessWidget {
             : LoginPage());
   }
 }
+
+
+///flutter clean
+///
+///flutter pub get
