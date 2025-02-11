@@ -1,24 +1,32 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+
 import 'package:new_task_app/snackbar.dart';
 
-class CreateTaskPage extends StatefulWidget {
-  const CreateTaskPage({super.key});
+class UpdateTaskPage extends StatefulWidget {
+  const UpdateTaskPage({
+    super.key,
+    required this.task,
+  });
+
+  final Map<String, dynamic> task;
 
   @override
-  State<CreateTaskPage> createState() => _CreateTaskPageState();
+  State<UpdateTaskPage> createState() => _UpdateTaskPageState();
 }
 
-class _CreateTaskPageState extends State<CreateTaskPage> {
+class _UpdateTaskPageState extends State<UpdateTaskPage> {
   late TextEditingController titleController;
   late TextEditingController descriptionController;
 
   @override
   void initState() {
     super.initState();
-    titleController = TextEditingController();
-    descriptionController = TextEditingController();
+    titleController = TextEditingController(text: widget.task['title']);
+    descriptionController =
+        TextEditingController(text: widget.task['description']);
   }
 
   @override
@@ -33,32 +41,30 @@ class _CreateTaskPageState extends State<CreateTaskPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Create a task"),
+        title: Text("Updata a task"),
         actions: [
           FilledButton(
               onPressed: () async {
                 try {
-                  final id = DateTime.now().toString();
                   FirebaseFirestore firestore = FirebaseFirestore.instance;
                   await firestore
                       .collection("users")
                       .doc(FirebaseAuth.instance.currentUser!.uid)
                       .collection('tasks')
-                      .doc(id)
-                      .set({
-                    "id": id,
+                      .doc(widget.task['id'])
+                      .update({
                     "title": titleController.text,
                     "description": descriptionController.text,
                   });
 
-                  showSnackBar(context, "Task added");
+                  showSnackBar(context, "Updated task");
                 } catch (e) {
                   showSnackBar(context, e.toString());
                 }
 
                 Navigator.of(context).pop();
               },
-              child: Text("Post")),
+              child: Text("Update")),
           SizedBox(width: 12),
         ],
       ),
