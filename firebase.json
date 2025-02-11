@@ -1,1 +1,33 @@
-{"flutter":{"platforms":{"android":{"default":{"projectId":"taskapp-f3894","appId":"1:1066108335336:android:6a31d549901c54bbc2455d","fileOutput":"android/app/google-services.json"}},"dart":{"lib/firebase_options.dart":{"projectId":"taskapp-f3894","configurations":{"android":"1:1066108335336:android:6a31d549901c54bbc2455d","ios":"1:1066108335336:ios:9da73fe42a7b411dc2455d","macos":"1:1066108335336:ios:9da73fe42a7b411dc2455d","web":"1:1066108335336:web:ea1d6b081a370f26c2455d","windows":"1:1066108335336:web:8afd02d50452de08c2455d"}}}}}}
+{
+    "hosting": {
+        "public": "build/web",
+        "ignore": [
+            "firebase.json",
+            "**/.*",
+            "**/node_modules/**"
+        ]
+    },
+    "flutter": {
+        "platforms": {
+            "android": {
+                "default": {
+                    "projectId": "taskapp-f3894",
+                    "appId": "1:1066108335336:android:6a31d549901c54bbc2455d",
+                    "fileOutput": "android/app/google-services.json"
+                }
+            },
+            "dart": {
+                "lib/firebase_options.dart": {
+                    "projectId": "taskapp-f3894",
+                    "configurations": {
+                        "android": "1:1066108335336:android:6a31d549901c54bbc2455d",
+                        "ios": "1:1066108335336:ios:9da73fe42a7b411dc2455d",
+                        "macos": "1:1066108335336:ios:9da73fe42a7b411dc2455d",
+                        "web": "1:1066108335336:web:ea1d6b081a370f26c2455d",
+                        "windows": "1:1066108335336:web:8afd02d50452de08c2455d"
+                    }
+                }
+            }
+        }
+    }
+}

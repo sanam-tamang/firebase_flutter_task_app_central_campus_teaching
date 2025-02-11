@@ -58,6 +58,8 @@ flutter pub get</code></pre>
     <p style="color: #fff;">UI:</p>
     <img src="screenshot/image.png" alt="App UI" style="max-width: 100%; height: auto; border-radius: 5px; margin-top: 10px;">
 
+   <a  href ="https://taskapp-f3894.web.app/" > Watch Live Demo here </a>
+
 <h2 style="color: #fff;">Contributing</h2>
     <p style="color: #fff;">Pull requests are welcome. For major changes, please open an issue first to discuss what you’d like to change.</p>
 
