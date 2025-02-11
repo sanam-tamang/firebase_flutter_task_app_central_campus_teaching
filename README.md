@@ -1,9 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Task App</title>
+
+ <head>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -35,6 +33,7 @@
             margin-top: 10px;
         }
     </style>
+
 </head>
 <body>
     <h1>Task App - Teaching at central Campus</h1>
@@ -73,7 +72,6 @@ flutter pub get</code></pre>
     
 <h2>Usage</h2>
     <p>Run the Flutter app with:</p>
-    <pre><code>flutter pub get</code></pre>
     <pre><code>flutter run</code></pre>
     
 <h2>Firestore Data Structure</h2>
