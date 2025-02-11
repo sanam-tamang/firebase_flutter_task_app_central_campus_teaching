@@ -96,7 +96,7 @@ class _RegisterPageState extends State<RegisterPage> {
               child: Card(
                 child: Padding(
                   padding:
-                      const EdgeInsets.symmetric(horizontal: 12, vertical: 40),
+                      const EdgeInsets.symmetric(horizontal: 20, vertical: 40),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     mainAxisSize: MainAxisSize.min,
@@ -166,7 +166,9 @@ class _RegisterPageState extends State<RegisterPage> {
                                   builder: (context) => LoginPage())),
                           child: RichText(
                               text: TextSpan(children: [
-                            TextSpan(text: "Already have an account? "),
+                            TextSpan(
+                                text: "Already have an account? ",
+                                style: TextStyle(color: Colors.grey)),
                             TextSpan(
                                 text: "Login",
                                 style: TextStyle(color: Colors.blue)),
