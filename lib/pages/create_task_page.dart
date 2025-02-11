@@ -13,6 +13,7 @@ class CreateTaskPage extends StatefulWidget {
 class _CreateTaskPageState extends State<CreateTaskPage> {
   late TextEditingController titleController;
   late TextEditingController descriptionController;
+  bool isLoading = false;
 
   @override
   void initState() {
@@ -23,10 +24,44 @@ class _CreateTaskPageState extends State<CreateTaskPage> {
 
   @override
   void dispose() {
-    super.dispose();
-
     titleController.dispose();
     descriptionController.dispose();
+    super.dispose();
+  }
+
+  Future<void> createTask() async {
+    if (titleController.text.isEmpty || descriptionController.text.isEmpty) {
+      showSnackBar(context, "Title and Description cannot be empty");
+      return;
+    }
+
+    setState(() {
+      isLoading = true;
+    });
+
+    try {
+      final id = DateTime.now().toString();
+      FirebaseFirestore firestore = FirebaseFirestore.instance;
+      await firestore
+          .collection("users")
+          .doc(FirebaseAuth.instance.currentUser!.uid)
+          .collection('tasks')
+          .doc(id)
+          .set({
+        "id": id,
+        "title": titleController.text,
+        "description": descriptionController.text,
+      });
+
+      showSnackBar(context, "Task added successfully");
+      Navigator.of(context).pop();
+    } catch (e) {
+      showSnackBar(context, "Error: ${e.toString()}");
+    }
+
+    setState(() {
+      isLoading = false;
+    });
   }
 
   @override
@@ -35,30 +70,15 @@ class _CreateTaskPageState extends State<CreateTaskPage> {
       appBar: AppBar(
         title: Text("Create a task"),
         actions: [
-          FilledButton(
-              onPressed: () async {
-                try {
-                  final id = DateTime.now().toString();
-                  FirebaseFirestore firestore = FirebaseFirestore.instance;
-                  await firestore
-                      .collection("users")
-                      .doc(FirebaseAuth.instance.currentUser!.uid)
-                      .collection('tasks')
-                      .doc(id)
-                      .set({
-                    "id": id,
-                    "title": titleController.text,
-                    "description": descriptionController.text,
-                  });
-
-                  showSnackBar(context, "Task added");
-                } catch (e) {
-                  showSnackBar(context, e.toString());
-                }
-
-                Navigator.of(context).pop();
-              },
-              child: Text("Post")),
+          isLoading
+              ? Padding(
+                  padding: const EdgeInsets.all(10.0),
+                  child: CircularProgressIndicator(),
+                )
+              : FilledButton(
+                  onPressed: createTask,
+                  child: Text("Post"),
+                ),
           SizedBox(width: 12),
         ],
       ),

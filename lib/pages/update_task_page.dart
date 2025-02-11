@@ -20,6 +20,7 @@ class UpdateTaskPage extends StatefulWidget {
 class _UpdateTaskPageState extends State<UpdateTaskPage> {
   late TextEditingController titleController;
   late TextEditingController descriptionController;
+  bool isLoading = false;
 
   @override
   void initState() {
@@ -31,40 +32,59 @@ class _UpdateTaskPageState extends State<UpdateTaskPage> {
 
   @override
   void dispose() {
-    super.dispose();
-
     titleController.dispose();
     descriptionController.dispose();
+    super.dispose();
+  }
+
+  Future<void> updateTask() async {
+    if (titleController.text.isEmpty || descriptionController.text.isEmpty) {
+      showSnackBar(context, "Title and Description cannot be empty");
+      return;
+    }
+
+    setState(() {
+      isLoading = true;
+    });
+
+    try {
+      FirebaseFirestore firestore = FirebaseFirestore.instance;
+      await firestore
+          .collection("users")
+          .doc(FirebaseAuth.instance.currentUser!.uid)
+          .collection('tasks')
+          .doc(widget.task['id'])
+          .update({
+        "title": titleController.text,
+        "description": descriptionController.text,
+      });
+
+      showSnackBar(context, "Updated task");
+      Navigator.of(context).pop();
+    } catch (e) {
+      showSnackBar(context, "Error: ${e.toString()}");
+    }
+
+    setState(() {
+      isLoading = false;
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Updata a task"),
+        title: Text("Update a task"),
         actions: [
-          FilledButton(
-              onPressed: () async {
-                try {
-                  FirebaseFirestore firestore = FirebaseFirestore.instance;
-                  await firestore
-                      .collection("users")
-                      .doc(FirebaseAuth.instance.currentUser!.uid)
-                      .collection('tasks')
-                      .doc(widget.task['id'])
-                      .update({
-                    "title": titleController.text,
-                    "description": descriptionController.text,
-                  });
-
-                  showSnackBar(context, "Updated task");
-                } catch (e) {
-                  showSnackBar(context, e.toString());
-                }
-
-                Navigator.of(context).pop();
-              },
-              child: Text("Update")),
+          isLoading
+              ? Padding(
+                  padding: const EdgeInsets.all(10.0),
+                  child: CircularProgressIndicator(),
+                )
+              : FilledButton(
+                  onPressed: updateTask,
+                  child: Text("Update"),
+                ),
           SizedBox(width: 12),
         ],
       ),
